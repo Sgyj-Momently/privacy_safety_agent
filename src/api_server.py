@@ -5,11 +5,14 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel, Field
 
 from .privacy_guard import screen_bundle
 
 app = FastAPI(title="Privacy Safety Agent API", version="0.1.0")
+
+Instrumentator().instrument(app).expose(app, endpoint="/metrics", include_in_schema=False)
 
 
 class PrivacySafetyRequest(BaseModel):

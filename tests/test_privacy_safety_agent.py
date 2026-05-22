@@ -61,3 +61,11 @@ class PrivacySafetyAgentTest(TestCase):
         self.assertEqual(response.json()["project_id"], "sample")
         self.assertEqual(response.json()["excluded_photo_count"], 1)
 
+    def test_metrics_endpoint(self):
+        client = TestClient(app)
+
+        response = client.get("/metrics")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("http_request_duration_seconds", response.text)
+
