@@ -8,9 +8,13 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel, Field
 
+from .error_envelope import install_envelope_handlers
 from .privacy_guard import screen_bundle
 
 app = FastAPI(title="Privacy Safety Agent API", version="0.1.0")
+
+# ADR 005 표준 에러 envelope 등록.
+install_envelope_handlers(app)
 
 Instrumentator().instrument(app).expose(app, endpoint="/metrics", include_in_schema=False)
 
